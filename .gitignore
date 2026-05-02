@@ -1,0 +1,34 @@
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vector DB local storage
+vector_store/
+*.faiss
+
+# Logs
+*.log
+
+# Streamlit
+.streamlit/secrets.toml
+frontend/.streamlit/secrets.toml
