@@ -6,7 +6,6 @@ Tracks adaptive quiz flow with timing and difficulty.
 import uuid
 from datetime import datetime, timezone
 from sqlalchemy import String, Float, Integer, Boolean, DateTime, JSON, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.postgres import Base
 
@@ -15,12 +14,12 @@ class QuizSession(Base):
     __tablename__ = "quiz_sessions"
 
     id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
     )
     user_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True
+        String(36), ForeignKey("users.id"), nullable=False, index=True
     )
 
     status: Mapped[str] = mapped_column(String(20), default="active")  # active / completed / abandoned
@@ -52,12 +51,12 @@ class QuizAnswer(Base):
     __tablename__ = "quiz_answers"
 
     id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
     )
     session_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False), ForeignKey("quiz_sessions.id"), nullable=False, index=True
+        String(36), ForeignKey("quiz_sessions.id"), nullable=False, index=True
     )
 
     question_number: Mapped[int] = mapped_column(Integer, nullable=False)

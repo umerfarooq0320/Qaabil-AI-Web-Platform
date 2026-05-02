@@ -13,8 +13,8 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     SECRET_KEY: str = "change-me"
 
-    # -- PostgreSQL --
-    POSTGRES_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/qabil"
+    # -- PostgreSQL / SQLite --
+    POSTGRES_URL: str = "sqlite+aiosqlite:///./qabil.db"
 
     # -- MongoDB --
     MONGODB_URL: str = "mongodb://localhost:27017"

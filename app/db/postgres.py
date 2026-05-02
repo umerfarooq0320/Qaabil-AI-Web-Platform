@@ -14,11 +14,14 @@ from app.config import get_settings
 settings = get_settings()
 
 # Create async engine
+engine_kwargs = {"echo": settings.DEBUG}
+if settings.POSTGRES_URL.startswith("postgresql"):
+    engine_kwargs["pool_size"] = 20
+    engine_kwargs["max_overflow"] = 10
+
 engine = create_async_engine(
     settings.POSTGRES_URL,
-    echo=settings.DEBUG,
-    pool_size=20,
-    max_overflow=10,
+    **engine_kwargs
 )
 
 # Session factory

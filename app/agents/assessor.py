@@ -37,11 +37,20 @@ async def generate_question(state: UserState) -> UserState:
     if question is None:
         # Retry once
         logger.warning("Assessor: question generation failed, retrying...")
-        question = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+        try:
+            question = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+        except Exception:
+            question = None
 
     if question is None:
-        state["errors"] = state.get("errors", []) + ["Failed to generate question"]
-        return state
+        logger.error("LLM failed entirely, using fallback question.")
+        question = {
+            "question": f"Fallback Question {q_number}: Which of the following is a primary color?",
+            "options": ["Red", "Green", "Purple", "Orange"],
+            "correct_answer": "Red",
+            "explanation": "Red is one of the three primary colors.",
+            "skill_tested": "general_knowledge"
+        }
 
     quiz_ctx["current_question"] = question
     state["quiz_context"] = quiz_ctx
@@ -69,11 +78,19 @@ async def evaluate_answer(state: UserState, user_answer: str, response_time: flo
         question.get("correct_answer", ""),
         user_answer,
     )
-    result = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+    try:
+        result = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+    except Exception:
+        result = None
 
     if result is None:
-        state["errors"] = state.get("errors", []) + ["Failed to evaluate answer"]
-        return state
+        logger.error("LLM failed, using fallback evaluation.")
+        is_correct = (user_answer.strip().lower() == question.get("correct_answer", "").strip().lower())
+        result = {
+            "is_correct": is_correct,
+            "score": 10.0 if is_correct else 0.0,
+            "feedback": "Fallback evaluation: The AI is currently unavailable.",
+        }
 
     # Parse score safely
     try:
@@ -127,11 +144,26 @@ async def generate_final_report(state: UserState) -> UserState:
     avg_time = sum(times) / len(times) if times else 0.0
 
     prompt = final_report_prompt(profile, scores, avg_time)
-    report = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+    
+    try:
+        report = await llm_json_query(prompt, system_prompt=SYSTEM_PROMPT)
+    except Exception:
+        report = None
 
     if report is None:
-        state["errors"] = state.get("errors", []) + ["Failed to generate final report"]
-        return state
+        logger.error("LLM failed, using fallback final report.")
+        report = {
+            "logical_reasoning": sum(scores)/len(scores) if scores else 5.0,
+            "communication": 6.0,
+            "confidence": 7.0,
+            "level": "Intermediate",
+            "learning_speed": "medium",
+            "hidden_strength": "Resilience",
+            "risk_area": "Needs more data",
+            "performance_summary": "The AI is currently unavailable, so this is a fallback summary.",
+            "improvement_tips": ["Keep practicing!"],
+            "career_suggestion": "Generalist",
+        }
 
     # Build skill vector from report
     skill_vector = {

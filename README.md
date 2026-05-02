@@ -14,9 +14,9 @@ Follow these steps to set up the project on your local machine.
 
 Before you begin, ensure you have the following installed:
 - **Python 3.11+** — [Download Python](https://python.org)
-- **PostgreSQL 15+** — [Download](https://postgresql.org) (or use [Supabase](https://supabase.com) free tier)
-- **MongoDB 7+** — [Download](https://mongodb.com) (or use [Atlas](https://cloud.mongodb.com) free tier)
 - **Git** — [Download Git](https://git-scm.com/)
+
+*(Note: The platform is configured for **Zero-Configuration Local Development**. It uses SQLite and mocked services by default so you can run it instantly without installing PostgreSQL or MongoDB!)*
 
 ### 2. Clone and Setup Environment
 
@@ -42,27 +42,17 @@ pip install -r requirements.txt
 
 ### 3. Environment Configuration
 
-You need to set up your environment variables for API keys and databases.
+You need to set up your environment variables for API keys.
 
 ```bash
 # Copy the example environment file
 copy .env.example .env   # (On Windows)
 # cp .env.example .env   # (On Mac/Linux)
 ```
-Open the `.env` file in your code editor and fill in your keys:
+Open the `.env` file in your code editor and fill in your key:
 - `OPENROUTER_API_KEY` — Get from [openrouter.ai](https://openrouter.ai)
-- `POSTGRES_URL` — Your PostgreSQL connection string
-- `MONGODB_URL` — Your MongoDB connection string
-- `JWT_SECRET` — A random secret string for security
 
-### 4. Database Setup
-
-Ensure your PostgreSQL server is running. Create a new database named `qabil`:
-
-```sql
--- Run this in psql or pgAdmin:
-CREATE DATABASE qabil;
-```
+*(The database connection string is already pre-configured to `sqlite+aiosqlite:///./qabil.db` for instant setup).*
 
 ---
 

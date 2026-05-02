@@ -88,6 +88,10 @@ async def llm_json_query(
         max_tokens=max_tokens,
     )
 
+    if not raw:
+        logger.warning("LLM returned empty response for JSON query.")
+        return None
+
     # Try to extract JSON from the response
     try:
         return json.loads(raw)

@@ -6,7 +6,6 @@ Stores profile, skill vector, scores, and current stage.
 import uuid
 from datetime import datetime, timezone
 from sqlalchemy import String, Float, DateTime, JSON
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.postgres import Base
 
@@ -15,7 +14,7 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
     )

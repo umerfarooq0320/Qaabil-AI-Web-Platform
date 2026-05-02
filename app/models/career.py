@@ -5,7 +5,6 @@ Career passport model — AI-generated career profile.
 import uuid
 from datetime import datetime, timezone
 from sqlalchemy import String, Float, DateTime, JSON, ForeignKey, Text
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.db.postgres import Base
 
@@ -14,12 +13,12 @@ class CareerPassport(Base):
     __tablename__ = "career_passports"
 
     id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
     )
     user_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False), ForeignKey("users.id"), unique=True, nullable=False
+        String(36), ForeignKey("users.id"), unique=True, nullable=False
     )
 
     qabil_score: Mapped[float] = mapped_column(Float, default=0.0)

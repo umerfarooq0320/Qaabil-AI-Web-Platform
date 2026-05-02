@@ -5,7 +5,6 @@ Skill snapshots — tracks skill vector evolution over time.
 import uuid
 from datetime import datetime, timezone
 from sqlalchemy import String, Float, DateTime, JSON, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.postgres import Base
 
@@ -14,12 +13,12 @@ class SkillSnapshot(Base):
     __tablename__ = "skill_snapshots"
 
     id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False),
+        String(36),
         primary_key=True,
         default=lambda: str(uuid.uuid4()),
     )
     user_id: Mapped[str] = mapped_column(
-        UUID(as_uuid=False), ForeignKey("users.id"), nullable=False, index=True
+        String(36), ForeignKey("users.id"), nullable=False, index=True
     )
 
     # What triggered this snapshot

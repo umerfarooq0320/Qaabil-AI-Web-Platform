@@ -146,6 +146,12 @@ def show_dashboard():
             st.session_state.access_token = None
             st.session_state.user_name = ""
             st.session_state.user_id = ""
+            st.session_state.quiz_session_id = None
+            st.session_state.quiz_active = False
+            st.session_state.quiz_complete = False
+            st.session_state.current_q = None
+            st.session_state.quiz_history = []
+            st.session_state.quiz_report = None
             st.rerun()
 
     # Main dashboard
