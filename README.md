@@ -97,6 +97,6 @@ Edit `.env` with:
 
 ## 👥 Team
 
-- **Backend**: FastAPI (this repo)
-- **Frontend**: Streamlit (separate repo)
-- **AI Agents**: Contributed individually
+- **Backend**: FastAPI 
+- **Frontend**: Streamlit 
+- **AI Agents**: --
