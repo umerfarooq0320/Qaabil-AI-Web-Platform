@@ -19,8 +19,7 @@ langgraph==0.4.1
 langchain-community==0.3.24
 
 # -- Vector DB --
-faiss-cpu==1.11.0
-
+faiss-cpu==1.13.2
 # -- Auth & Security --
 python-jose[cryptography]==3.4.0
 passlib[bcrypt]==1.7.4
