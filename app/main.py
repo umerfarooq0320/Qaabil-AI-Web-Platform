@@ -1,10 +1,3 @@
-"""
-QABIL AI Platform — FastAPI Application Entry Point
-
-Start with:
-    uvicorn app.main:app --reload --port 8000
-"""
-
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -19,72 +12,56 @@ settings = get_settings()
 
 # Configure logging
 logging.basicConfig(
-    level=logging.DEBUG if settings.DEBUG else logging.INFO,
+    level=logging.INFO,
     format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
 )
 logger = logging.getLogger(__name__)
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Startup and shutdown events."""
-    # ---- Startup ----
     logger.info("🚀 Starting QABIL AI Platform...")
-
-    # Create database tables (use Alembic in production)
+    
+    # Init DB
     try:
         await init_db()
-        logger.info("✅ PostgreSQL connected & tables created")
+        logger.info("✅ Database connected successfully")
     except Exception as e:
-        logger.warning(f"⚠️ PostgreSQL init failed: {e}")
-        logger.warning("   Server will start, but DB endpoints will fail.")
-        logger.warning("   Make sure PostgreSQL is running and .env is configured.")
-
-    logger.info("✅ QABIL backend is ready!")
-    logger.info(f"📖 API Docs: http://localhost:8000/docs")
+        logger.error(f"❌ DB connection failed: {e}")
 
     yield
 
-    # ---- Shutdown ----
+    # Shutdown
     logger.info("Shutting down...")
     await close_db()
     await close_mongo()
 
-
-# Create app
 app = FastAPI(
     title="QABIL AI Platform",
-    description=(
-        "AI-native system for adaptive assessment, "
-        "skill profiling, and career passport generation."
-    ),
     version="0.1.0",
     lifespan=lifespan,
 )
 
-# CORS — allow Streamlit and local dev
+# CORS — Final Fix for Deployment
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"]
 )
 
-# Mount v1 API routes
+# Mount routes
 app.include_router(v1_router)
 
-
-# Health check
 @app.get("/", tags=["Health"])
 async def root():
     return {
-        "app": settings.APP_NAME,
-        "status": "running",
-        "version": "0.1.0",
-        "docs": "/docs",
+        "app": "QABIL",
+        "status": "online",
+        "message": "Backend is talking to Frontend!"
     }
-
 
 @app.get("/health", tags=["Health"])
 async def health():
