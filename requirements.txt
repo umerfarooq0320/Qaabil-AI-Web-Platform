@@ -1,38 +1,26 @@
-# -- Core Framework --
-fastapi==0.115.12
-uvicorn[standard]==0.34.2
-python-multipart==0.0.20
-
-# -- Database --
-sqlalchemy[asyncio]==2.0.41
+fastapi
+uvicorn[standard]
+python-multipart
+sqlalchemy[asyncio]
 asyncpg
 aiosqlite
-alembic==1.15.2
-motor==3.7.0
-redis==5.3.0
-
-# -- AI / LLM --
-openai==1.78.1
-langchain==0.3.25
-langchain-openai==0.3.18
-langgraph==0.4.1
-langchain-community==0.3.24
-
-# -- Vector DB --
+alembic
+motor
+redis
+openai
+langchain
+langchain-openai
+langgraph
+langchain-community
 faiss-cpu
-# -- Auth & Security --
-python-jose[cryptography]==3.4.0
-passlib[bcrypt]==1.7.4
-bcrypt==3.2.0
-pydantic[email]==2.11.3
-pydantic-settings==2.9.1
-
-# -- Utilities --
-python-dotenv==1.1.0
-httpx==0.28.1
-
-# -- Frontend (Streamlit) --
-streamlit==1.45.1
-plotly==6.1.2
-requests==2.32.3
-streamlit-lottie==0.0.5
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+pydantic[email]
+pydantic-settings
+python-dotenv
+httpx
+streamlit
+plotly
+requests
+streamlit-lottie
