@@ -247,3 +247,31 @@ if st.session_state.access_token:
     show_dashboard()
 else:
     show_auth_page()
+
+    import streamlit as st
+import requests
+
+# Backend URL
+backend_url = "https://qaabil-ai-web-platform-production.up.railway.app"
+
+# Function to submit quiz answer
+def submit_quiz_answer(user_answer, response_time_sec):
+    # API call to submit answer
+    response = requests.post(f"{backend_url}/api/v1/quiz/88/answer", json={"user_answer": user_answer, "response_time_sec": response_time_sec})
+
+    if response.status_code == 200:
+        data = response.json()
+        st.write(f"Answer is correct: {data['is_correct']}")
+        st.write(f"Feedback: {data['feedback']}")
+        if data['quiz_complete']:
+            st.write("Quiz Completed!")
+    else:
+        st.error("Failed to submit answer")
+
+# Streamlit frontend for quiz
+st.title("QABIL AI Quiz")
+user_answer = st.text_input("Enter your answer:")
+response_time_sec = st.slider("Response Time (in seconds):", 1, 60)
+
+if st.button("Submit Answer"):
+    submit_quiz_answer(user_answer, response_time_sec)
