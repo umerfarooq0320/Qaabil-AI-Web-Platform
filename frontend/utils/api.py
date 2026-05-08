@@ -6,10 +6,10 @@ All frontend pages use this module to make API calls.
 import requests
 import streamlit as st
 from typing import Any
+import os
 
 # Backend URL — change if deployed elsewhere
-BASE_URL = "http://localhost:8000/api/v1"
-
+BASE_URL = st.secrets.get("BACKEND_URL", "http://localhost:8000/api/v1") 
 
 def _get_headers() -> dict:
     """Get auth headers from session state."""
@@ -46,14 +46,14 @@ def signup(email: str, name: str, password: str, education: str = "", field: str
         "field_of_study": field or None,
         "english_level": english or None,
     }
-    resp = requests.post(f"{BASE_URL}/auth/signup", json=payload)
+    resp = requests.post(f"{BASE_URL}/auth/signup", json=payload, timeout=60)
     return _handle_response(resp)
 
 
 def login(email: str, password: str) -> dict | None:
     """Login and get JWT token."""
     payload = {"email": email, "password": password}
-    resp = requests.post(f"{BASE_URL}/auth/login", json=payload)
+    resp = requests.post(f"{BASE_URL}/auth/login", json=payload, timeout=60)
     return _handle_response(resp)
 
 
@@ -69,7 +69,7 @@ def get_profile() -> dict | None:
 
 def update_profile(data: dict) -> dict | None:
     """Update user profile."""
-    resp = requests.patch(f"{BASE_URL}/profile/me", json=data, headers=_get_headers())
+    resp = requests.patch(f"{BASE_URL}/profile/me", json=data, headers=_get_headers(), timeout=60)
     return _handle_response(resp)
 
 
