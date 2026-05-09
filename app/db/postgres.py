@@ -26,11 +26,17 @@ if raw_url.startswith("postgres://"):
 elif raw_url.startswith("postgresql://") and "+asyncpg" not in raw_url:
     raw_url = raw_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-# Create async engine
+# --- Create async engine ---
 engine_kwargs = {"echo": settings.DEBUG}
+
 if "postgresql" in raw_url:
     engine_kwargs["pool_size"] = 20
     engine_kwargs["max_overflow"] = 10
+    
+    engine_kwargs["connect_args"] = {
+        "prepared_statement_cache_size": 0,
+        "statement_cache_size": 0
+    }
 
 engine = create_async_engine(
     raw_url,
