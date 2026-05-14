@@ -1,1 +1,16 @@
 
+name: Keep Qaabil Alive
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wake up Streamlit and Render
+        run: |
+          curl -I https://kaabil-ai-web.streamlit.app/
+          curl -I https://qaabil-ai-web-platform.onrender.com/
