@@ -1,10 +1,9 @@
-
 name: Keep Qaabil Alive
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
-  workflow_dispatch:
+    - cron: '*/15 * * * *' 
+  workflow_dispatch:      
 
 jobs:
   ping:
@@ -12,5 +11,5 @@ jobs:
     steps:
       - name: Wake up Streamlit and Render
         run: |
-          curl -I https://kaabil-ai-web.streamlit.app/
-          curl -I https://qaabil-ai-web-platform.onrender.com/
+          curl -s -m 10 https://kaabil-ai-web.streamlit.app/ || true
+          curl -s -m 10 https://qaabil-ai-web-platform.onrender.com/ || true
