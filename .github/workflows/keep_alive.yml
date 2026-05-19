@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Wake up Streamlit and Render
         run: |
-          curl -L https://kaabil-ai-web.streamlit.app/
-          curl -L https://qaabil-ai-web-platform.onrender.com/
+          curl -s -m 10 https://kaabil-ai-web.streamlit.app/ || true
+          curl -s -m 10 https://qaabil-ai-web-platform.onrender.com/ || true
